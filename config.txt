@@ -1,0 +1,5 @@
+logfile=C:\pdq_api_server_log.txt
+username=YourUserName
+password=YourPassword
+domain=YourDomain
+whitelistedPackages=package1,package2,package3
