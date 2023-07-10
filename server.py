@@ -1,9 +1,9 @@
-import http.server
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 import re
 import subprocess
 import os
 
-class MyHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
+class MyHTTPRequestHandler(BaseHTTPRequestHandler):
 	def do_GET(self):
 		if self.path.startswith("/deploy/"):
 			package_name, computer_name = self.path.split("/")[2:4]
@@ -48,27 +48,29 @@ class MyHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
 	def run_command_with_different_user(self, package_name, computer_name):
 		command = [
-			"runas",
-			"/user:{}@{}".format(self.config["username"], self.config["domain"]),
+			"psexec.exe",
+			"-nobanner",
+			"-r", "pdq_api_backend",
+			"-u", self.config["username"],
+			"-p", self.config["password"],
 			"pdqdeploy.exe",
 			"deploy",
-			"-package",
-			package_name,
-			"-targets",
-			computer_name,
+			"-package", package_name,
+			"-targets", computer_name
 		]
 
-		password = self.config["password"]
 		try:
-			runas_process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-			runas_process.stdin.write(password.encode())
-			output, _ = runas_process.communicate()
+			runas_process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			output, error = runas_process.communicate()
+
+			if runas_process.returncode != 0:
+				return f"Error executing command: {error.decode()}"
 
 			return output.decode()
 		except subprocess.CalledProcessError as e:
 			return f"Error executing command: {e.output.decode()}"
 		except FileNotFoundError:
-			return "pdqdeploy.exe not found"
+			return "psexec.exe or pdqdeploy.exe not found"
 
 def load_config(file_path):
 	config = {}
@@ -84,7 +86,7 @@ def run_server(config_file):
 	config = load_config(config_file)
 
 	server_address = ("", 8080)
-	httpd = http.server.HTTPServer(server_address, MyHTTPRequestHandler)
+	httpd = ThreadingHTTPServer(server_address, MyHTTPRequestHandler)
 	MyHTTPRequestHandler.config = config
 	httpd.serve_forever()
 
