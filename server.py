@@ -18,7 +18,7 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
 			self.send_response(200)
 			self.send_header("Content-type", "text/plain")
 			self.end_headers()
-			self.wfile.write(pdq_output.encode())
+			#self.wfile.write(pdq_output.encode())
 
 			log_entry = f"Request from: {self.client_address[0]}, Package: {package_name}, Computer: {computer_name}, PDQ Deploy output: {pdq_output}\n"
 			try:
