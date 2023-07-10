@@ -6,7 +6,7 @@ Very basic right now, supports deploying packages from a whitelist in config.txt
 
 Basic regex matching for input sanitation (it only accepts package/computer names consisting of numbers, letters, and hyphens)
 
-Also, it does the server-side command execution with a different account, credentials of which go in config.txt
+Also, it does the server-side command execution with a different account and psexec, credentials of which go in config.txt
 
 The account that does command execution must be a "Console User" in PDQ Deploy (Info here: https://help.pdq.com/hc/en-us/articles/115002510472-PDQ-Credentials-Explained)
 
