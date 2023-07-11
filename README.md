@@ -30,6 +30,16 @@ This API server can be configured as a Windows service with [NSSM](http://nssm.c
 
 The server accepts requests via the URI /deploy/packagename/computername
 
-Sending a request to it with CURL looks like this:
+Sending a request to it looks like this:
+
+Invoke-WebRequest "http://your_pdq_server:8080/deploy/packagename/targetcomputer"
+
+or this:
 
 curl -X GET http://your_pdq_server:8080/deploy/packagename/targetcomputer
+
+## Use cases:
+
+Useful for login scripts to check if the user belongs to a group that should have a thing installed, and if its not installed tell PDQ to install it, etc.
+
+PDQ Deploy does not have any way of installing software based on users group membership
