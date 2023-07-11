@@ -2,17 +2,33 @@
 
 I wanted PDQ Deploy to have an API server so i wrote one for it
 
-Very basic right now, supports deploying packages from a whitelist in config.txt
+You can use it to deploy packages that have been added to the whitelist in config.txt
 
-Basic regex matching for input sanitation (it only accepts package/computer names consisting of numbers, letters, and hyphens)
+It has basic regex matching for input sanitation (it only accepts package/computer names consisting of numbers, letters, and hyphens)
 
-Also, it does the server-side command execution with a different account and psexec, credentials of which go in config.txt
+It also does its server-side command execution with a different account, credentials of which go in config.txt
 
-The account that does command execution must be a "Console User" in PDQ Deploy (Info here: https://help.pdq.com/hc/en-us/articles/115002510472-PDQ-Credentials-Explained)
+## Requirements:
 
-For some annoying reason, PDQ Deploy "Console Users" need to also be local Administrators to interface with PDQ
+-  [Python](https://www.python.org/downloads/windows/)
+-  [Pywin32](https://pypi.org/project/pywin32/)
 
-This API server accepts requests via the URI /deploy/packagename/computername
+The account that does command execution must be a "Console User" in PDQ Deploy as well as part of the Windows "Administrators" group (more info [here](https://help.pdq.com/hc/en-us/articles/115002510472-PDQ-Credentials-Explained))
+
+This API server can be configured as a Windows service with [NSSM](http://nssm.cc/) :
+
+<img src="https://github.com/albanqafa/PDQ-Deploy-API-Server-py/assets/37601993/327e1bd5-d837-45c7-ad00-22a56103a0ab" width="400" height="200">
+
+**NOTE: Unfortunately, right now it needs to be ran as LocalSystem to work as a Windows service**
+
+## TODO:
+
+-  figure out the specific permissions win32process.CreateProcessAsUser needs
+-  OR switch to ctypes.windll.advapi32.CreateProcessWithLogonW (painful)
+
+## How do i use this?
+
+The server accepts requests via the URI /deploy/packagename/computername
 
 Sending a request to it with CURL looks like this:
 
