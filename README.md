@@ -43,3 +43,5 @@ curl -X GET http://your_pdq_server:8080/deploy/packagename/targetcomputer
 Useful for login scripts to check if the user belongs to a group that should have a thing installed, and if its not installed tell PDQ to install it, etc.
 
 PDQ Deploy does not have any way of installing software based on users group membership
+
+The script [example_login_script.ps1](https://github.com/albanqafa/PDQ-Deploy-API-Server-py/blob/main/example_login_script.ps1) is included in this repo as an example
