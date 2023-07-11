@@ -6,7 +6,7 @@ You can use it to deploy packages that have been added to the whitelist in confi
 
 It has basic regex matching for input sanitation (it only accepts package/computer names consisting of numbers, letters, and hyphens)
 
-It also does its server-side command execution with a different account, credentials of which go in config.txt
+It does the server-side command execution with a different account, credentials of which go in config.txt
 
 ## Requirements:
 
