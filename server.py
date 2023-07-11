@@ -56,34 +56,36 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
 	def run_command_with_different_user(self, package_name, computer_name):
 		command = "pdqdeploy.exe deploy -package {} -targets {}".format(package_name, computer_name)
 
-		# Obtain a handle to the user's token
-		user_handle = win32security.LogonUser(
-			self.config["username"],
-			".",  # Use the local computer
-			self.config["password"],
-			win32con.LOGON32_LOGON_INTERACTIVE,  # Logon type
-			win32con.LOGON32_PROVIDER_DEFAULT  # Logon provider
-		)
+		try:
+			# Obtain a handle to the user's token
+			user_handle = win32security.LogonUser(
+				self.config["username"],
+				".",  # Use the local computer
+				self.config["password"],
+				win32con.LOGON32_LOGON_INTERACTIVE,  # Logon type
+				win32con.LOGON32_PROVIDER_DEFAULT  # Logon provider
+			)
 
-		# Use the token to execute the command
-		process_info = win32process.CreateProcessAsUser(
-			user_handle,  # Token
-			None,  # ApplicationName (None to use CommandLine)
-			command,  # CommandLine
-			None,  # ProcessAttributes
-			None,  # ThreadAttributes
-			0,  # bInheritHandles
-			win32con.NORMAL_PRIORITY_CLASS,  # dwCreationFlags
-			None,  # Environment (None to inherit from parent)
-			None,  # CurrentDirectory (None to inherit from parent)
-			win32process.STARTUPINFO()  # StartupInfo
-		)
+			# Use the token to execute the command
+			process_info = win32process.CreateProcessAsUser(
+				user_handle,  # Token
+				None,  # ApplicationName (None to use CommandLine)
+				command,  # CommandLine
+				None,  # ProcessAttributes
+				None,  # ThreadAttributes
+				0,  # bInheritHandles
+				win32con.NORMAL_PRIORITY_CLASS,  # dwCreationFlags
+				None,  # Environment (None to inherit from parent)
+				None,  # CurrentDirectory (None to inherit from parent)
+				win32process.STARTUPINFO()  # StartupInfo
+			)
 
-		# Wait for the process to complete
-		win32event.WaitForSingleObject(process_info[0], win32event.INFINITE)
-
-		return "Command executed successfully"
-
+			# Wait for the process to complete
+			win32event.WaitForSingleObject(process_info[0], win32event.INFINITE)
+		except Exception as e:
+			return f"Error executing command: {str(e)}"
+		else:
+			return "Command executed successfully"
 
 def load_config(file_path):
 	config = {}
