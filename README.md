@@ -44,4 +44,4 @@ Useful for login scripts to check if the user belongs to a group that should hav
 
 PDQ Deploy does not have any way of installing software based on users group membership
 
-The script [example_login_script.ps1](https://github.com/albanqafa/PDQ-Deploy-API-Server-py/blob/main/example_login_script.ps1) is included in this repo as an example
+The script [example_login_script.ps1](https://github.com/albanqafa/PDQ-Deploy-API-Server-py/blob/main/example_login_script.ps1) is included in this repo as an example of how to install software based on a users AD group membership on computer login with PDQ via this API server
