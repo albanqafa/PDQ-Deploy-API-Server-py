@@ -13,7 +13,7 @@ It does the server-side command execution with a different account, credentials 
 -  [Python](https://www.python.org/downloads/windows/)
 -  [Pywin32](https://pypi.org/project/pywin32/)
 
-The account that does command execution must be a "Console User" in PDQ Deploy as well as part of the Windows "Administrators" group (more info [here](https://help.pdq.com/hc/en-us/articles/115002510472-PDQ-Credentials-Explained))
+The account that does command execution must be a "Console User" in PDQ Deploy as well as part of the Windows "Administrators" group (more info [here](https://help.pdq.com/hc/en-us/articles/115002510472-PDQ-Credentials-Explained) and how to [here](https://www.pdq.com/blog/adding-console-users-explained/))
 
 This API server can be configured as a Windows service with [NSSM](http://nssm.cc/) :
 
